@@ -5,7 +5,7 @@
 CONFIG_CTAP_SHORT = ON
 
 ifneq ($(KERNELRELEASE),)
-	obj-m	 := r8152.o
+	obj-m	 := r8156.o
 #	EXTRA_CFLAGS += -DRTL8152_S5_WOL
 #	EXTRA_CFLAGS += -DRTL8152_DEBUG
 	ifneq (,$(filter OFF off, $(CONFIG_CTAP_SHORT)))
@@ -15,7 +15,7 @@ else
 	KERNELDIR ?= /lib/modules/$(shell uname -r)/build
 	PWD :=$(shell pwd)
 	TARGET_PATH := kernel/drivers/net/usb
-	INBOXDRIVER := $(shell find $(subst build,$(TARGET_PATH),$(KERNELDIR)) -name r8152.ko.* -type f)
+	INBOXDRIVER := $(shell find $(subst build,$(TARGET_PATH),$(KERNELDIR)) -name r8156.ko.* -type f)
 	RULEFILE = 50-usb-realtek-net.rules
 	RULEDIR = /etc/udev/rules.d/
 
@@ -35,14 +35,14 @@ install:
 ifneq ($(shell lsmod | grep r8153_ecm),)
 	rmmod r8153_ecm
 endif
-ifneq ($(shell lsmod | grep r8152),)
-	rmmod r8152
+ifneq ($(shell lsmod | grep r8156),)
+	rmmod r8156
 endif
 ifneq ($(INBOXDRIVER),)
 	rm -f $(INBOXDRIVER)
 endif
 	$(MAKE) -C $(KERNELDIR) M=$(PWD) INSTALL_MOD_DIR=$(TARGET_PATH) modules_install
-	modprobe r8152
+	modprobe r8156
 
 .PHONY: install_rules
 install_rules:
